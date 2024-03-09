@@ -8,28 +8,45 @@
 lvim.plugins = {
   --everforest
   { 'sainnhe/everforest' },
-  { 'mfussenegger/nvim-dap' }
+  --nvim-dap
+  { 'mfussenegger/nvim-dap' },
+  --lsp_signature
+  { 'ray-x/lsp_signature.nvim' },
+  --silicon(for taking snapshots of code)
+  -- { 'krivahtoo/silicon.nvim'}
   --tokyonight
   --{'folke/tokyonight.nvim'}
 };
 
 --settings
-
 --autoformat
---lvim.format_on_save = true
+-- lvim.format_on_save = true
+
+--tab width
+vim.opt.tabstop = 4
 
 --colorscheme
 lvim.colorscheme = "everforest"
 
 --mapping
+
 --compile and run
-lvim.keys.normal_mode['<C-A-n>'] = ':cd ~/build | :!rm a.out <cr> | :w <cr> | :silent !g++ -g % <cr> | :!./a.out <cr>'
---set breakpoint
+lvim.keys.normal_mode['<C-A-n>'] = ':!g++ -g % -o %:r <cr> | :!%:r <cr>'
+
+--compile and run (stdin and stdout from file)
+lvim.keys.normal_mode['<C-A-m>'] = ':!g++ -g % -o %:r <cr> | :!%:r < ./%:h/input.txt > ./%:h/output.txt <cr>'
+
+--save file
+lvim.keys.normal_mode['<C-A-b>'] = ':w <cr>';
+
 --left buffer
 lvim.keys.normal_mode['<C-Left>'] = ':bprev <cr>'
 --right buffer
 lvim.keys.normal_mode['<C-Right>'] = ':bnext <cr>'
+lvim.keys.normal_mode['<C-F>'] = ':lua vim.lsp.buf.code_action() <cr>'
+lvim.keys.normal_mode["<C-q>"] = false
 
+--debug configurations
 vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
 vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
 vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
@@ -39,20 +56,11 @@ vim.keymap.set('n', '<C-c>', function() require('dap').clear_breakpoints() end)
 vim.keymap.set('n', '<C-t>', function() require('dapui').toggle() end)
 vim.keymap.set('n', '<A-BS>', function() require('dap').disconnect() end)
 
-
---[[
-vim.cmd[[
-  map <C-A-n> : w <cr>
-  map <C-A-n> : silent !g++ % <cr>
-  map <C-A-n> : !./a.out <cr>
-  map <C-A-n> : silent !rm a.out <cr>
-]]
-
+--toggle floating (function)signature
 
 
 -- configure nvim-dap
 lvim.builtin.dap.on_config_done = function(dap)
-
   dap.adapters.codelldb = {
     type = "server",
     port = "${port}",
@@ -71,9 +79,23 @@ lvim.builtin.dap.on_config_done = function(dap)
       name = "Launch file",
       type = "codelldb",
       request = "launch",
-      program = "~/build/a.out",
+      program = "${fileDirname}/${fileBasenameNoExtension}",
       cwd = "${workspaceFolder}",
       arg = {},
     },
   }
 end
+
+
+--configure lsp_signature
+require 'lsp_signature'.setup({
+  on_attach = function()
+    require "lsp_signature".on_attach({
+      bind = true, -- This is mandatory, otherwise border config won't get registered.
+      handler_opts = {
+        border = "rounded"
+      }
+    })
+  end,
+}
+)
