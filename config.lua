@@ -1,6 +1,14 @@
+-- Read the docs: https://www.lunarvim.org/docs/configuration
+-- Video Tutorials: https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6
+-- Forum: https://www.reddit.com/r/lunarvim/
+-- Discord: https://discord.com/invite/Xb9B4Ny
+--
+
 lvim.plugins = {
   --everforest
-  -- { 'sainnhe/everforest' },
+  -- { 'sainnhe/everforest' }, 
+  -- gotham
+  { 'whatyouhide/vim-gotham'},
   --nvim-dap
   { 'mfussenegger/nvim-dap' },
   --lsp_signature
@@ -14,7 +22,7 @@ lvim.plugins = {
   -- {'morhetz/gruvbox'},
 
   --smooth scrolling
-  {'karb94/neoscroll.nvim'}
+  {'karb94/neoscroll.nvim'},
 };
 
 --settings
@@ -32,7 +40,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
   pattern = { "*" },
 })
 --colorscheme
-lvim.colorscheme = "tokyonight-night"
+lvim.colorscheme = "gotham"
 -- lvim.colorscheme = "tokyonight-moon"
 -- lvim.colorscheme = "gruvbox"
 
@@ -57,8 +65,8 @@ vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
 vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
 vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
 vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
-vim.keymap.set('n', '<C-b>', function() require('dap').toggle_breakpoint() end)
-vim.keymap.set('n', '<C-c>', function() require('dap').clear_breakpoints() end)
+vim.keymap.set('n', '<A-b>', function() require('dap').toggle_breakpoint() end)
+vim.keymap.set('n', '<A-c>', function() require('dap').clear_breakpoints() end)
 vim.keymap.set('n', '<C-A-t>', function() require('dapui').toggle() end)
 vim.keymap.set('n', '<A-BS>', function() require('dap').disconnect() end)
 
@@ -67,28 +75,23 @@ vim.keymap.set('n', '<A-BS>', function() require('dap').disconnect() end)
 
 -- configure nvim-dap
 lvim.builtin.dap.on_config_done = function(dap)
-  dap.adapters.codelldb = {
-    type = "server",
-    port = "${port}",
-    executable = {
-      -- provide the absolute path for `codelldb` command if not using the one installed using `mason.nvim`
-      command = "/usr/bin/codelldb",
-      args = { "--port", "${port}" },
-
-      -- On windows you may have to uncomment this:
-      -- detached = false,
-    },
+  dap.adapters.lldb = {
+    type = "executable",
+    command = "lldb-vscode-14",
+    name = "lldb",
   }
 
   dap.configurations.cpp = {
     {
-      name = "Launch file",
-      type = "codelldb",
+      name = "Launch",
+      type = "lldb",
       request = "launch",
+      console = "integratedTerminal",
       program = function()
         return vim.fn.input('Path to executable: ')
       end,
       cwd = "${workspaceFolder}",
+      stopOnEntry = false,
       arg = {},
     },
   }
@@ -121,3 +124,5 @@ require('neoscroll').setup({
     post_hook = nil,             -- Function to run after the scrolling animation ends
     performance_mode = false,    -- Disable "Performance Mode" on all buffers.
 })
+--configure telescope
+lvim.builtin.telescope.defaults.file_ignore_patterns = {"build", "node_modules", "%.cmake", "%.png", "%.svg"}
