@@ -5,24 +5,30 @@
 --
 
 lvim.plugins = {
-  --everforest
-  -- { 'sainnhe/everforest' }, 
   -- gotham
-  { 'whatyouhide/vim-gotham'},
+  { 'whatyouhide/vim-gotham' },
+  --tokyonight
+  -- {'folke/tokyonight.nvim'},
+  --tokyodark
+  -- {'tiagovla/tokyodark.nvim'},
+  --everforest
+  -- { 'sainnhe/everforest' },
   --nvim-dap
   { 'mfussenegger/nvim-dap' },
   --lsp_signature
   { 'ray-x/lsp_signature.nvim' },
+  --smooth scrolling
+  { 'karb94/neoscroll.nvim' },
+  --surround
+  { 'tpope/vim-surround' },
+  --arduino
+  { 'stevearc/vim-arduino',
+    lazy = false,
+  }
+  --splitjoin (too expensive and useless)
+  -- { 'AndrewRadev/splitjoin.vim'}
   --silicon(for taking snapshots of code)
   -- { 'krivahtoo/silicon.nvim'}
-  --tokyonight
-  {'folke/tokyonight.nvim'},
-
-  --gruvbox
-  -- {'morhetz/gruvbox'},
-
-  --smooth scrolling
-  {'karb94/neoscroll.nvim'},
 };
 
 --settings
@@ -31,7 +37,7 @@ lvim.plugins = {
 
 --tab width
 vim.opt.tabstop = 4
-vim.opt.clipboard="unnamed,unnamedplus"
+vim.opt.clipboard = "unnamed,unnamedplus"
 
 --reloads the buffer when it is updated externally
 vim.o.autoread = true
@@ -39,10 +45,26 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
   command = "if mode() != 'c' | checktime | endif",
   pattern = { "*" },
 })
+
 --colorscheme
+local default_config = {
+    transparent_background = false, -- set background to transparent
+    gamma = 1.00, -- adjust the brightness of the theme
+    styles = {
+        comments = { italic = false }, -- style for comments
+        keywords = { italic = false }, -- style for keywords
+        identifiers = { italic = false }, -- style for identifiers
+        functions = {}, -- style for functions
+        variables = {}, -- style for variables
+    },
+}
 lvim.colorscheme = "gotham"
--- lvim.colorscheme = "tokyonight-moon"
+-- lvim.colorscheme = "tokyonight"
+-- lvim.colorscheme = "tokyodark"
+-- require("tokyodark").setup(default_config)
+-- lvim.colorscheme = "everforest"
 -- lvim.colorscheme = "gruvbox"
+-- lvim.colorscheme = "flow"
 
 --mapping
 
@@ -112,17 +134,17 @@ require 'lsp_signature'.setup({
 )
 
 require('neoscroll').setup({
-    -- All these keys will be mapped to their corresponding default scrolling animation
-    mappings = {'<C-u>', '<C-d>', '<C-b>', '<C-f>',
-                '<C-y>', '<C-e>', 'zt', 'zz', 'zb'},
-    hide_cursor = true,          -- Hide cursor while scrolling
-    stop_eof = true,             -- Stop at <EOF> when scrolling downwards
-    respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
-    cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
-    easing_function = nil,       -- Default easing function
-    pre_hook = nil,              -- Function to run before the scrolling animation starts
-    post_hook = nil,             -- Function to run after the scrolling animation ends
-    performance_mode = false,    -- Disable "Performance Mode" on all buffers.
+  -- All these keys will be mapped to their corresponding default scrolling animation
+  mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>',
+    '<C-y>', '<C-e>', 'zt', 'zz', 'zb' },
+  hide_cursor = true,          -- Hide cursor while scrolling
+  stop_eof = true,             -- Stop at <EOF> when scrolling downwards
+  respect_scrolloff = false,   -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+  cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+  easing_function = nil,       -- Default easing function
+  pre_hook = nil,              -- Function to run before the scrolling animation starts
+  post_hook = nil,             -- Function to run after the scrolling animation ends
+  performance_mode = false,    -- Disable "Performance Mode" on all buffers.
 })
 --configure telescope
-lvim.builtin.telescope.defaults.file_ignore_patterns = {"build", "node_modules", "%.cmake", "%.png", "%.svg"}
+lvim.builtin.telescope.defaults.file_ignore_patterns = { "build", "node_modules", "%.cmake", "%.png", "%.svg" }
