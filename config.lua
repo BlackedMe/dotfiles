@@ -1,4 +1,9 @@
 -- Read the docs: https://www.lunarvim.org/docs/configuration
+-- Example configs: https://github.com/LunarVim/starter.lvim
+-- Video Tutorials: https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6
+-- Forum: https://www.reddit.com/r/lunarvim/
+-- Discord: https://discord.com/invite/Xb9B4Ny
+-- Read the docs: https://www.lunarvim.org/docs/configuration
 -- Video Tutorials: https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6
 -- Forum: https://www.reddit.com/r/lunarvim/
 -- Discord: https://discord.com/invite/Xb9B4Ny
@@ -8,11 +13,15 @@ lvim.plugins = {
   -- gotham
   { 'whatyouhide/vim-gotham' },
   --tokyonight
-  -- {'folke/tokyonight.nvim'},
+  { 'folke/tokyonight.nvim' },
   --tokyodark
-  -- {'tiagovla/tokyodark.nvim'},
+  { 'tiagovla/tokyodark.nvim' },
   --everforest
-  -- { 'sainnhe/everforest' },
+  { 'sainnhe/everforest' },
+  --gruvbox
+  { 'morhetz/gruvbox' },
+  --neofusion
+  { 'diegoulloao/neofusion.nvim' },
   --nvim-dap
   { 'mfussenegger/nvim-dap' },
   --lsp_signature
@@ -22,67 +31,74 @@ lvim.plugins = {
   --surround
   { 'tpope/vim-surround' },
   --arduino
-  { 'stevearc/vim-arduino',
-    lazy = false,
-  }
-  --splitjoin (too expensive and useless)
+  -- { 'stevearc/vim-arduino',
+  --   lazy = false,
+  -- },
+  -- { 'sudar/vim-arduino-syntax'},
+  -- splitjoin (too expensive and useless)
   -- { 'AndrewRadev/splitjoin.vim'}
-  --silicon(for taking snapshots of code)
+  -- silicon(for taking snapshots of code)
   -- { 'krivahtoo/silicon.nvim'}
 };
 
---settings
---autoformat
+lvim.builtin.alpha.dashboard.section.header.val = {
+  [[                                                                       ]],
+  [[                                                                       ]],
+  [[                                                                       ]],
+  [[  ██████   █████                   █████   █████  ███                  ]],
+  [[ ░░██████ ░░███                   ░░███   ░░███  ░░░                   ]],
+  [[  ░███░███ ░███   ██████   ██████  ░███    ░███  ████  █████████████   ]],
+  [[  ░███░░███░███  ███░░███ ███░░███ ░███    ░███ ░░███ ░░███░░███░░███  ]],
+  [[  ░███ ░░██████ ░███████ ░███ ░███ ░░███   ███   ░███  ░███ ░███ ░███  ]],
+  [[  ░███  ░░█████ ░███░░░  ░███ ░███  ░░░█████░    ░███  ░███ ░███ ░███  ]],
+  [[  █████  ░░█████░░██████ ░░██████     ░░███      █████ █████░███ █████ ]],
+  [[ ░░░░░    ░░░░░  ░░░░░░   ░░░░░░       ░░░      ░░░░░ ░░░░░ ░░░ ░░░░░  ]],
+  [[                                                                       ]],
+  [[                     λ it be like that sometimes λ                     ]],
+}
+
+lvim.builtin.alpha.dashboard.section.footer.val = require 'alpha.fortune' ()
+
+-- settings
+-- autoformat
 -- lvim.format_on_save = true
 
---tab width
+-- tab width
 vim.opt.tabstop = 4
 vim.opt.clipboard = "unnamed,unnamedplus"
-
---reloads the buffer when it is updated externally
+vim.opt.termguicolors = true
+vim.opt.fillchars = { eob = " " }
+-- reloads the buffer when it is updated externally
 vim.o.autoread = true
 vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
   command = "if mode() != 'c' | checktime | endif",
   pattern = { "*" },
 })
 
---colorscheme
-local default_config = {
-    transparent_background = false, -- set background to transparent
-    gamma = 1.00, -- adjust the brightness of the theme
-    styles = {
-        comments = { italic = false }, -- style for comments
-        keywords = { italic = false }, -- style for keywords
-        identifiers = { italic = false }, -- style for identifiers
-        functions = {}, -- style for functions
-        variables = {}, -- style for variables
-    },
-}
 lvim.colorscheme = "gotham"
 -- lvim.colorscheme = "tokyonight"
 -- lvim.colorscheme = "tokyodark"
--- require("tokyodark").setup(default_config)
 -- lvim.colorscheme = "everforest"
 -- lvim.colorscheme = "gruvbox"
+-- lvim.colorscheme = "neofusion"
 -- lvim.colorscheme = "flow"
+-- mapping
 
---mapping
-
---compile and run
+-- compile and run
 lvim.keys.normal_mode['<C-A-n>'] = ':!g++ -g % -o %:r <cr> | :!%:r <cr>'
 
---compile and run (stdin and stdout from file)
+-- compile and run (stdin and stdout from file)
 lvim.keys.normal_mode['<C-A-m>'] = ':!g++ -g % -o %:r <cr> | :!%:r < ./%:h/input.txt > ./%:h/output.txt <cr>'
 
---save file
+-- save file
 lvim.keys.normal_mode['<C-A-b>'] = ':w <cr>';
 
---left buffer
+-- left buffer
 lvim.keys.normal_mode['<C-Left>'] = ':bprev <cr>'
---right buffer
+-- right buffer
 lvim.keys.normal_mode['<C-Right>'] = ':bnext <cr>'
 lvim.keys.normal_mode['<C-F>'] = ':lua vim.lsp.buf.code_action() <cr>'
---debug configurations
+-- debug configurations
 vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
 vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
 vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
@@ -92,7 +108,7 @@ vim.keymap.set('n', '<A-c>', function() require('dap').clear_breakpoints() end)
 vim.keymap.set('n', '<C-A-t>', function() require('dapui').toggle() end)
 vim.keymap.set('n', '<A-BS>', function() require('dap').disconnect() end)
 
---toggle floating (function)signature
+-- toggle floating (function)signature
 
 
 -- configure nvim-dap
@@ -120,7 +136,7 @@ lvim.builtin.dap.on_config_done = function(dap)
 end
 
 
---configure lsp_signature
+-- configure lsp_signature
 require 'lsp_signature'.setup({
   on_attach = function()
     require "lsp_signature".on_attach({
@@ -146,5 +162,11 @@ require('neoscroll').setup({
   post_hook = nil,             -- Function to run after the scrolling animation ends
   performance_mode = false,    -- Disable "Performance Mode" on all buffers.
 })
---configure telescope
+
+-- configure telescope
 lvim.builtin.telescope.defaults.file_ignore_patterns = { "build", "node_modules", "%.cmake", "%.png", "%.svg" }
+
+require('lspconfig').clangd.setup({
+  cmd = { "clangd",
+          "--header-insertion=never"},
+})
