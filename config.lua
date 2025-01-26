@@ -30,6 +30,15 @@ lvim.plugins = {
   { 'karb94/neoscroll.nvim' },
   --surround
   { 'tpope/vim-surround' },
+  --vimtex
+  { 'lervag/vimtex',
+    lazy = false,
+    tag = "v2.15",
+    init = function()
+      -- VimTeX configuration goes here, e.g.
+      vim.g.vimtex_view_method = "zathura"
+    end
+  },
   --arduino
   -- { 'stevearc/vim-arduino',
   --   lazy = false,
@@ -54,7 +63,7 @@ lvim.builtin.alpha.dashboard.section.header.val = {
   [[  █████  ░░█████░░██████ ░░██████     ░░███      █████ █████░███ █████ ]],
   [[ ░░░░░    ░░░░░  ░░░░░░   ░░░░░░       ░░░      ░░░░░ ░░░░░ ░░░ ░░░░░  ]],
   [[                                                                       ]],
-  [[                     λ it be like that sometimes λ                     ]],
+  [[                     λ done is better than perfect λ                   ]],
 }
 
 lvim.builtin.alpha.dashboard.section.footer.val = require 'alpha.fortune' ()
@@ -170,3 +179,6 @@ require('lspconfig').clangd.setup({
   cmd = { "clangd",
           "--header-insertion=never"},
 })
+
+vim.keymap.del("t", "<c-j>")
+vim.keymap.del("t", "<c-k>")
