@@ -92,14 +92,14 @@ lvim.colorscheme = "tokyodark"
 -- lvim.colorscheme = "neofusion"
 -- mapping
 
--- compile and run
-lvim.keys.normal_mode['<C-A-n>'] = ':!g++ -g % -o %:r <cr> | :cd %:h | :!./%:r <cr>'
-
--- compile and run (stdin and stdout from file)
-lvim.keys.normal_mode['<C-A-m>'] = ':!g++ -g % -o %:r <cr> | :!%:r < ./%:h/input.txt > ./%:h/output.txt <cr>'
-
 -- compile file
 lvim.keys.normal_mode['<C-A-b>'] = ':!g++ -g % -o %:r <cr>'
+
+-- compile and run
+lvim.keys.normal_mode['<C-A-n>'] = ':cd %:h | :!g++ -g % -o %:r <cr>| :!./%:r <cr>'
+
+-- compile and run (stdin and stdout from file)
+lvim.keys.normal_mode['<C-A-m>'] = ':cd %:h | :!g++ -g % -o %:r <cr> | :!./%:r < ./input.txt > ./output.txt <cr>'
 
 -- left buffer
 lvim.keys.normal_mode['<C-Left>'] = ':bprev <cr>'
