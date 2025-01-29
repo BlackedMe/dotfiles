@@ -84,13 +84,12 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
   pattern = { "*" },
 })
 
-lvim.colorscheme = "gotham"
+-- lvim.colorscheme = "gotham"
 -- lvim.colorscheme = "tokyonight"
--- lvim.colorscheme = "tokyodark"
+lvim.colorscheme = "tokyodark"
 -- lvim.colorscheme = "everforest"
 -- lvim.colorscheme = "gruvbox"
 -- lvim.colorscheme = "neofusion"
--- lvim.colorscheme = "flow"
 -- mapping
 
 -- compile and run
@@ -99,8 +98,8 @@ lvim.keys.normal_mode['<C-A-n>'] = ':!g++ -g % -o %:r <cr> | :!%:r <cr>'
 -- compile and run (stdin and stdout from file)
 lvim.keys.normal_mode['<C-A-m>'] = ':!g++ -g % -o %:r <cr> | :!%:r < ./%:h/input.txt > ./%:h/output.txt <cr>'
 
--- save file
-lvim.keys.normal_mode['<C-A-b>'] = ':w <cr>';
+-- compile file
+lvim.keys.normal_mode['<C-A-b>'] = ':!g++ -g % -o %:r <cr>'
 
 -- left buffer
 lvim.keys.normal_mode['<C-Left>'] = ':bprev <cr>'
