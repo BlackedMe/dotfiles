@@ -93,7 +93,7 @@ lvim.colorscheme = "tokyodark"
 -- mapping
 
 -- compile and run
-lvim.keys.normal_mode['<C-A-n>'] = ':!g++ -g % -o %:r <cr> | :!%:r <cr>'
+lvim.keys.normal_mode['<C-A-n>'] = ':!g++ -g % -o %:r <cr> | :cd %:h | :!./%:r <cr>'
 
 -- compile and run (stdin and stdout from file)
 lvim.keys.normal_mode['<C-A-m>'] = ':!g++ -g % -o %:r <cr> | :!%:r < ./%:h/input.txt > ./%:h/output.txt <cr>'
