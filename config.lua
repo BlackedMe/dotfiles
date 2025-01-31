@@ -86,10 +86,10 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
 
 -- lvim.colorscheme = "gotham"
 -- lvim.colorscheme = "tokyonight"
-lvim.colorscheme = "tokyodark"
+-- lvim.colorscheme = "tokyodark"
 -- lvim.colorscheme = "everforest"
 -- lvim.colorscheme = "gruvbox"
--- lvim.colorscheme = "neofusion"
+lvim.colorscheme = "neofusion"
 -- mapping
 
 
@@ -123,7 +123,8 @@ vim.keymap.set('n', '<A-BS>', function() require('dap').disconnect() end)
 lvim.builtin.dap.on_config_done = function(dap)
   dap.adapters.lldb = {
     type = "executable",
-    command = "lldb-vscode-14",
+    -- change accordingly based on where the extension file is put
+    command = "/home/black/.local/codelldb/extension/adapter/codelldb",
     name = "lldb",
   }
 
