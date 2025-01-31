@@ -134,8 +134,9 @@ lvim.builtin.dap.on_config_done = function(dap)
       type = "lldb",
       request = "launch",
       console = "integratedTerminal",
+      -- program = "${fileDirname}/${fileBasenameNoExtension}",
       program = function()
-        return vim.fn.input('Path to executable: ')
+        return vim.fn.input({ prompt = 'Path to executable: ', default = "${fileDirname}/${fileBasenameNoExtension}" })
       end,
       cwd = "${workspaceFolder}",
       stopOnEntry = false,
